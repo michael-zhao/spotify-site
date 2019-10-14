@@ -20,9 +20,9 @@ if token:
     sp = spotipy.Spotify(auth=token)
     sp.trace = False
     ranges = ['short_term','medium_term','long_term']
-    trackOrArtist = str.lower(input("Do you want to see your top tracks or top artists? "))
+    track_or_artist = str.lower(input("Do you want to see your top tracks or top artists? "))
 
-    if trackOrArtist == "tracks":
+    if track_or_artist == "tracks":
         term = str.lower(input("What range do you want (short, medium, long)? "))
         print()
         leng = int(input("How many songs do you want to show (1-50)? "))
@@ -67,24 +67,25 @@ if token:
             print("average popularity: " + str(avg/leng))
             print()
 
-    if trackOrArtist == "artists":
-        term = str.lower(input("What range do you want (1 for short, 2 for medium, 3 for long)? "))
+    if track_or_artist == "artists":
+        term = str.lower(input("What range do you want (short, medium, long)? "))
         print()
-        leng = int(input("How many artists do you want to show (1-50)? "))
+        artists_range = input("How many artists do you want to show? Enter a number 1-50 (default 10)")
+        leng = int(artists_range) if isinstance(artists_range, int) else 10
         print()
 
-        if term == "short":
+        if term == "short" or term == "s":
             print("Range: Short term")
             results =sp.current_user_top_artists(time_range=ranges[0],limit=leng)
             for i, item in enumerate(results['items'],1):
                 popu = " - popularity: " + str(item['popularity'])
-                withGenre = item['name'] + popu + "; genres: " + item['genres'][0] if len(item['genres']) > 0 else item['name'] + popu
-                print(str(i) + ")", withGenre, end="" if len(item['genres']) > 1 else "\n")
+                with_genre = item['name'] + popu + "; genres: " + item['genres'][0] if len(item['genres']) > 0 else item['name'] + popu
+                print(str(i) + ")", with_genre, end="" if len(item['genres']) > 1 else "\n")
                 for x in range(1,len(item['genres'])):
                     print(", " + item['genres'][x], end="" if x+1 < len(item['genres']) else "\n")
             print()
 
-        elif term == "medium":
+        elif term == "medium" or term == "m" or term == "med":
             print("Range: Medium term")
             results = sp.current_user_top_artists(time_range=ranges[1],limit=leng)
             for i, item in enumerate(results['items'],1):
@@ -94,7 +95,7 @@ if token:
                     print(", " + item['genres'][x], end="" if x+1 < len(item['genres']) else "\n")
             print()
 
-        elif term == "long":
+        elif term == "long" or term == "l":
             print("Range: Long term")
             results = sp.current_user_top_artists(time_range=ranges[2],limit=leng)
             for i, item in enumerate(results['items'],1):
