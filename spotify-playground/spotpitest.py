@@ -14,7 +14,7 @@ scope = 'user-read-private user-read-playback-state user-modify-playback-state'
 
 #erase cache, prompt user permission
 try:
-    token = util.prompt_for_user_token(username, scope)
+    token = util.prompt_for_user_token(username,scope,client_id='4b69524b7c0e42c5b92d120b02ca6f17',client_secret='601b8d254c8b4b688918e6d4d1d5cd7d',redirect_uri='https://google.com/')
 except:
     os.remove(f".cache-{username}")
     token = util.prompt_for_user_token(username, scope)
