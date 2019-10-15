@@ -1,7 +1,7 @@
 import pprint
 import sys
 
-import spotipy
+import spotipy  # figure out how to get rid of the dumb intellicode warning
 import spotipy.util as util
 import json
 

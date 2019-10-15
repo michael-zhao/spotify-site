@@ -6,42 +6,60 @@ import webbrowser
 import spotipy.util as util
 from json.decoder import JSONDecodeError
 
-#get username from terminal
-username = sys.argv[1]
-scope = 'user-read-private user-read-playback-state user-modify-playback-state'
+def main():
+    """Main method."""
+    username = sys.argv[1]
+    scope = 'user-read-private user-read-playback-state user-modify-playback-state'
+    token = get_token(username, scope)
+    spotify = create_spotify_object(token)
+    devices = get_devices(spotify)
 
-#user ID: 1219415681
-
-#erase cache, prompt user permission
-try:
-    token = util.prompt_for_user_token(username,scope,client_id='4b69524b7c0e42c5b92d120b02ca6f17',client_secret='601b8d254c8b4b688918e6d4d1d5cd7d',redirect_uri='https://google.com/')
-except:
-    os.remove(f".cache-{username}")
-    token = util.prompt_for_user_token(username, scope)
+def get_token(username, scope):
+    """Returns a token given a username and scope."""
+    #user ID: 1219415681
+    #erase cache, prompt user permission
+    try:
+        token = util.prompt_for_user_token(
+            username, scope, client_id='4b69524b7c0e42c5b92d120b02ca6f17',
+            client_secret='601b8d254c8b4b688918e6d4d1d5cd7d', redirect_uri='https://google.com/')
+    except:
+        os.remove(f".cache-{username}")
+        token = util.prompt_for_user_token(username, scope)
+    return token
 
 #create spotify object
-spotifyObject = spotipy.Spotify(auth=token)
+def create_spotify_object(token):
+    spotify_object = spotipy.Spotify(auth=token)
+    return spotify_object
 
+def get_devices(sp):
 #get current device
-devices = spotifyObject.devices()
-#print(json.dumps(devices,sort_keys=True,indent=4))
-devicesID = devices['devices'][0]['id']
+    devices = sp.devices()
+    #print(json.dumps(devices,sort_keys=True,indent=4))
+    devices_id = devices['devices'][0]['id']
+    return devices
 
-#current track info
-track = spotifyObject.current_user_playing_track()
-#print(json.dumps(track,sort_keys=True,indent=4))
-print()
-#print(track)
-artist = track['item']['artists'][0]['name']
-track = track['item']['name']
+def get_current_track_and_artist(sp):
+    """Returns a tuple consisting of the track and artist currently playing."""
+    #current track info
+    track = sp.current_user_playing_track()
+    #print(json.dumps(track,sort_keys=True,indent=4))
+    print()
+    #print(track)
+    artist = track['item']['artists'][0]['name']
+    track = track['item']['name']
 
-if artist != "":
-    print("Playing: " + artist + " - " + track)
+    if artist != "":
+        print("Playing: " + artist + " - " + track)
+    return track, artist
 
-#user info
-user = spotifyObject.me()
-displayName = user['display_name']
-followers = user['followers']['total']
+def get_user_info(sp):
+    """Returns a 3-tuple of user, display name, and followers."""
+    #user info
+    user = sp.me()
+    display_name = user['display_name']
+    followers = user['followers']['total']
+    return user, display_name, followers
 
 while True:
     print()
@@ -114,3 +132,5 @@ while True:
     if choice == "1":
         break
 #print(json.dumps(VARIABLE,sort_keys=true,indent=4))
+
+main()
