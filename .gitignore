@@ -1,4 +1,6 @@
 *.pyc
+*.ini
+*.config
 *~
 __pycache__
 myvenv

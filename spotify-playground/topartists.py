@@ -7,6 +7,8 @@ import json
 
 #user id: 1219415681
 
+#used powershell, $env:SPOTIPY_...='...' to make env vars work
+
 #get username from terminal, or else ask for user input username
 if len(sys.argv) > 1:
     username = sys.argv[1]
@@ -14,7 +16,9 @@ else:
     username = input("please enter your username id: ")
 
 scope = 'user-top-read'
-token = util.prompt_for_user_token(username,scope,client_id='4b69524b7c0e42c5b92d120b02ca6f17',client_secret='601b8d254c8b4b688918e6d4d1d5cd7d',redirect_uri='https://google.com/')
+token = util.prompt_for_user_token(
+    username, scope, client_id='88c6ac8c789142a3918b399f3b785bc0', 
+    redirect_uri='https://google.com/')
 
 if token:
     sp = spotipy.Spotify(auth=token)
