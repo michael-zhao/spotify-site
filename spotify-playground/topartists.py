@@ -1,7 +1,7 @@
 import pprint
 import sys
 
-import spotipy  # figure out how to get rid of the dumb intellicode warning
+import spotipy  # figured out linting error (module spotipy not found) by changing .vscode/settings.json path
 import spotipy.util as util
 import json
 
@@ -37,8 +37,15 @@ def get_username(arg):
 
 def get_tracks(token, sp, ranges):
     term = str.lower(input("What range do you want (short, medium, long)? "))
+    if term != "short" or term != "medium" or term != "long":
+        term = str.lower(input("Please enter a valid range: short, medium, or long: "))
     print()
-    leng = int(input("How many songs do you want to show (1-50)? "))
+    track_range_i = input("How many artists do you want to show? Enter a number 1-50 (default 10): ")
+    try:
+        track_range = int(track_range_i)
+    except ValueError:
+        track_range = 10
+    leng = track_range
     print()
 
     if term == "short":
@@ -51,7 +58,7 @@ def get_tracks(token, sp, ranges):
             print(str(i) + ")", item['name'] + " - " + item['album']['artists'][0]['name'], end="" if len(item['album']['artists']) > 1 else " - popularity: " + str(item['popularity']) + "\n")
             for x in range(1,len(item['album']['artists'])):
                 print(", " + item['album']['artists'][x]['name'], end="" if x+1 < len(item['album']['artists']) else " - popularity: " + str(item['popularity']) + "\n")
-        print("average popularity: " + str(avg/leng))
+        print("average popularity of music listened to: " + str(avg/leng))
         print()
 
     elif term == "medium":
@@ -64,7 +71,7 @@ def get_tracks(token, sp, ranges):
             print(str(i) + ")", item['name'] + " - " + item['album']['artists'][0]['name'], end="" if len(item['album']['artists']) > 1 else " - popularity: " + str(item['popularity']) + "\n")
             for x in range(1,len(item['album']['artists'])):
                 print(", " + item['album']['artists'][x]['name'], end="" if x+1 < len(item['album']['artists']) else " - popularity: " + str(item['popularity']) + "\n")
-        print("average popularity: " + str(avg/leng))
+        print("average popularity of music listened to: " + str(avg/leng))
         print()
 
     elif term == "long":
@@ -77,66 +84,20 @@ def get_tracks(token, sp, ranges):
             print(str(i) + ")", item['name'] + " - " + item['album']['artists'][0]['name'], end="" if len(item['album']['artists']) > 1 else " - popularity: " + str(item['popularity']) + "\n")
             for x in range(1,len(item['album']['artists'])):
                 print(", " + item['album']['artists'][x]['name'], end="" if x+1 < len(item['album']['artists']) else " - popularity: " + str(item['popularity']) + "\n")
-        print("average popularity: " + str(avg/leng))
+        print("average popularity of music listened to: " + str(avg/leng))
         print()
-
-
-# if token:
-#     sp = spotipy.Spotify(auth=token)
-#     sp.trace = False
-#     ranges = ['short_term','medium_term','long_term']
-#     track_or_artist = str.lower(input("Do you want to see your top tracks or top artists? "))
-
-#     if track_or_artist == "tracks":
-#         term = str.lower(input("What range do you want (short, medium, long)? "))
-#         print()
-#         leng = int(input("How many songs do you want to show (1-50)? "))
-#         print()
-
-#         if term == "short":
-#             print()
-#             avg = 0
-#             print("Range: Short term")
-#             results = sp.current_user_top_tracks(time_range=ranges[0],limit=leng)
-#             for i, item in enumerate(results['items'],1):
-#                 avg += item['popularity']
-#                 print(str(i) + ")", item['name'] + " - " + item['album']['artists'][0]['name'], end="" if len(item['album']['artists']) > 1 else " - popularity: " + str(item['popularity']) + "\n")
-#                 for x in range(1,len(item['album']['artists'])):
-#                     print(", " + item['album']['artists'][x]['name'], end="" if x+1 < len(item['album']['artists']) else " - popularity: " + str(item['popularity']) + "\n")
-#             print("average popularity: " + str(avg/leng))
-#             print()
-
-#         elif term == "medium":
-#             print()
-#             avg = 0
-#             print("Range: Medium term")
-#             results = sp.current_user_top_tracks(time_range=ranges[1],limit=leng)
-#             for i, item in enumerate(results['items'],1):
-#                 avg += item['popularity']
-#                 print(str(i) + ")", item['name'] + " - " + item['album']['artists'][0]['name'], end="" if len(item['album']['artists']) > 1 else " - popularity: " + str(item['popularity']) + "\n")
-#                 for x in range(1,len(item['album']['artists'])):
-#                     print(", " + item['album']['artists'][x]['name'], end="" if x+1 < len(item['album']['artists']) else " - popularity: " + str(item['popularity']) + "\n")
-#             print("average popularity: " + str(avg/leng))
-#             print()
-
-#         elif term == "long":
-#             print()
-#             avg = 0
-#             print("Range: Long term")
-#             results = sp.current_user_top_tracks(time_range=ranges[2],limit=leng)
-#             for i, item in enumerate(results['items'],1):
-#                 avg += item['popularity']
-#                 print(str(i) + ")", item['name'] + " - " + item['album']['artists'][0]['name'], end="" if len(item['album']['artists']) > 1 else " - popularity: " + str(item['popularity']) + "\n")
-#                 for x in range(1,len(item['album']['artists'])):
-#                     print(", " + item['album']['artists'][x]['name'], end="" if x+1 < len(item['album']['artists']) else " - popularity: " + str(item['popularity']) + "\n")
-#             print("average popularity: " + str(avg/leng))
-#             print()
 
 def get_artists(token, sp, ranges):
     term = str.lower(input("What range do you want (short, medium, long)? "))
+    if term != "short" or term != "medium" or term != "long":
+        term = str.lower(input("Please enter a valid range: short, medium, or long: "))
     print()
-    artists_range = input("How many artists do you want to show? Enter a number 1-50 (default 10)")
-    leng = int(artists_range) if isinstance(artists_range, int) else 10
+    artist_range_i = input("How many artists do you want to show? Enter a number 1-50 (default 10): ")
+    try:
+        artist_range = int(artist_range_i)
+    except ValueError:
+        artist_range = 10
+    leng = artist_range
     print()
 
     if term == "short" or term == "s":
