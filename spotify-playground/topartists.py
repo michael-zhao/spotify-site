@@ -21,10 +21,14 @@ def main():
         sp.trace = False
         ranges = ['short_term','medium_term','long_term']
         track_or_artist = str.lower(input("Do you want to see your top tracks or top artists? "))
-        if track_or_artist == "tracks":
-            get_tracks(token, sp, ranges)
-        elif track_or_artist == "artists":
-            get_artists(token, sp, ranges)
+        while track_or_artist:
+            if track_or_artist == "tracks":
+                get_tracks(token, sp, ranges)
+            elif track_or_artist == "artists":
+                get_artists(token, sp, ranges)
+            else:
+                track_or_artist = str.lower(input("Please enter a valid parameter: tracks or artists "))
+
     else:
         print("Can't get token for", username)
 
@@ -37,8 +41,9 @@ def get_username(arg):
 
 def get_tracks(token, sp, ranges):
     term = str.lower(input("What range do you want (short, medium, long)? "))
-    if term != "short" or term != "medium" or term != "long":
-        term = str.lower(input("Please enter a valid range: short, medium, or long: "))
+    while term:
+        if term != "short" or term != "medium" or term != "long":
+            term = str.lower(input("Please enter a valid range: short, medium, or long: "))
     print()
     track_range_i = input("How many artists do you want to show? Enter a number 1-50 (default 10): ")
     try:
