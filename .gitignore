@@ -4,7 +4,7 @@
 *.cfg
 *~
 __pycache__
-myvenv
+eb-virt
 db.sqlite3
 /static
 .DS_Store
