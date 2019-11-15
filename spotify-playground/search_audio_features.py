@@ -10,6 +10,7 @@ class Color:
     END = '\033[0m'
 
 def main():
+    """Main method."""
     username = get_username(sys.argv)
     scope = 'user-top-read'
     token = util.prompt_for_user_token(username, scope)
@@ -48,6 +49,12 @@ def main():
         print(f"Can't get token for {username}")  
 
 def get_username(arg):
+    """
+    Returns a username based on the first non-file input of the system command, or takes in input
+    for username.
+
+    arg -- sys.argv, or the system input
+    """
     if len(arg) > 1:
         username = arg[1]
     else:
@@ -91,6 +98,13 @@ def get_username(arg):
 #     return item[0]['time_signature']
 
 def print_requested_features(sp, item, feature_input):
+    """
+    Prints results and user's desired features.
+
+    sp -- Spotify object using an authentication token.
+    item -- all of the results given a search query.
+    feature_input -- the list of features desired by the user.
+    """
     for feature in feature_input:
         if feature in item[0]:
             print(f"{feature}: {item[0][feature]}")
