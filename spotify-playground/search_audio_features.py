@@ -118,6 +118,7 @@ def get_results(sp, res, artist_query, feature_input):
                  item['album']['artists'][0]['name'] + "; ID: " + item['id'])
             # print(features)
             # print(f"Danceability: {get_danceability(sp, features)}")
+            print("Genre:", get_genre(sp, item))
             print_requested_features(sp, features, feature_input)
         else:
             if artist_query.lower() in item['album']['artists'][0]['name'].lower():
@@ -125,5 +126,10 @@ def get_results(sp, res, artist_query, feature_input):
                      item['album']['artists'][0]['name'] + "; ID: " + item['id'])
                 # print(features)
                 print_requested_features(sp, features, feature_input)
+
+def get_genre(sp, track):
+    track_album = sp.album(track['album']["external_urls"]["spotify"])
+    print(track_album)
+    return track_album["genres"]
 
 main()
