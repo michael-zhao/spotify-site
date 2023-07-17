@@ -4,8 +4,8 @@ Module allows user to look up album art and start playback of chosen tracks on t
 
 import os
 import sys
-import json #keep for a commented out piece of code
-from json.decoder import JSONDecodeError #keep for commented out code?
+# import json #keep for a commented out piece of code
+# from json.decoder import JSONDecodeError #keep for commented out code?
 import webbrowser
 import spotipy
 import spotipy.util as util
