@@ -9,3 +9,5 @@ db.sqlite3
 /static
 .DS_Store
 spotify-playground/.cache-1219415681
+*.xml
+*.iml
