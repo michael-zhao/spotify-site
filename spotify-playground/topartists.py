@@ -12,6 +12,10 @@ import spotipy.util as util
 # $env:SPOTIPY_CLIENT_SECRET='...'
 # $env:SPOTIPY_REDIRECT_URI='...'
 
+SHORT_TERM = "short"
+MEDIUM_TERM = "medium"
+LONG_TERM = "long"
+
 def main():
     """
     Main method to run in cli
@@ -65,55 +69,23 @@ def get_tracks(token, sp, ranges):
         track_range = 10
     leng = track_range
     print()
+    print()
 
-    if term == "short":
-        print()
-        avg = 0
-        print("Range: Short term")
-        results = sp.current_user_top_tracks(time_range=ranges[0], limit=leng)
-        for i, item in enumerate(results['items'], 1):
-            avg += item['popularity']
-            print(str(i) + ")", item['name'] + " - " + item['album']['artists'][0]['name'],
-                  end="" if len(item['album']['artists']) > 1 else " - popularity: " + str(item['popularity']) + "\n")
-            for x in range(1, len(item['album']['artists'])):
-                print(", " + item['album']['artists'][x]['name'],
-                      end="" if x + 1 < len(item['album']['artists']) else " - popularity: " + str(
-                          item['popularity']) + "\n")
-        print("average popularity of music listened to: " + str(avg / leng))
-        print()
-
-    elif term == "medium":
-        print()
-        avg = 0
-        print("Range: Medium term")
-        results = sp.current_user_top_tracks(time_range=ranges[1], limit=leng)
-        for i, item in enumerate(results['items'], 1):
-            avg += item['popularity']
-            print(str(i) + ")", item['name'] + " - " + item['album']['artists'][0]['name'],
-                  end="" if len(item['album']['artists']) > 1 else " - popularity: " + str(item['popularity']) + "\n")
-            for x in range(1, len(item['album']['artists'])):
-                print(", " + item['album']['artists'][x]['name'],
-                      end="" if x + 1 < len(item['album']['artists']) else " - popularity: " + str(
-                          item['popularity']) + "\n")
-        print("average popularity of music listened to: " + str(avg / leng))
-        print()
-
-    elif term == "long":
-        print()
-        avg = 0
-        print("Range: Long term")
-        results = sp.current_user_top_tracks(time_range=ranges[2], limit=leng)
-        for i, item in enumerate(results['items'], 1):
-            avg += item['popularity']
-            print(str(i) + ")", item['name'] + " - " + item['album']['artists'][0]['name'],
-                  end="" if len(item['album']['artists']) > 1 else " - popularity: " + str(item['popularity']) + "\n")
-            for x in range(1, len(item['album']['artists'])):
-                print(", " + item['album']['artists'][x]['name'],
-                      end="" if x + 1 < len(item['album']['artists']) else " - popularity: " + str(
-                          item['popularity']) + "\n")
-        print("average popularity of music listened to: " + str(avg / leng))
-        print()
-
+    match term:
+        case SHORT_TERM as time_range:
+            print(time_range)
+            results = sp.current_user_top_tracks(time_range=ranges[0], limit=leng)
+            print_popularity(results, leng)
+        case MEDIUM_TERM as time_range:
+            print(time_range)
+            results = sp.current_user_top_tracks(time_range=ranges[1], limit=leng)
+            print_popularity(results, leng)
+        case LONG_TERM as time_range:
+            print(time_range)
+            results = sp.current_user_top_tracks(time_range=ranges[2], limit=leng)
+            print_popularity(results, leng)
+        case _:
+            print("Invalid input - how did you get here?")
 
 def get_artists(token, sp, ranges):
     term = str.lower(input("What range do you want (short, medium, long)? "))
@@ -159,6 +131,19 @@ def get_artists(token, sp, ranges):
             for x in range(1, len(item['genres'])):
                 print(", " + item['genres'][x], end="" if x + 1 < len(item['genres']) else "\n")
         print()
+
+def print_popularity(results, leng):
+    sum = 0
+    for i, item in enumerate(results['items'], 1):
+        sum += item['popularity']
+        print(str(i) + ")", item['name'] + " - " + item['album']['artists'][0]['name'],
+                    end="" if len(item['album']['artists']) > 1 else " - popularity: " + str(item['popularity']) + "\n")
+        for x in range(1, len(item['album']['artists'])):
+            print(", " + item['album']['artists'][x]['name'],
+                    end="" if x + 1 < len(item['album']['artists']) else " - popularity: " + str(
+                        item['popularity']) + "\n")
+    print("average popularity of music listened to: " + str(sum / leng))
+    print()
 
 
 main()
