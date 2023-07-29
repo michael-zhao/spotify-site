@@ -11,3 +11,5 @@ db.sqlite3
 spotify-playground/.cache-1219415681
 *.xml
 *.iml
+.pylintrc
+.vscode/settings.json
