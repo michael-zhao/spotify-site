@@ -71,21 +71,21 @@ def get_tracks(token, sp, ranges):
     leng = track_range
     print()
 
+    results = None
     match term:
         case consts.SHORT_TERM as time_range:
             print(time_range)
             results = sp.current_user_top_tracks(time_range=ranges[0], limit=leng)
-            print_popularity(results, leng)
         case consts.MEDIUM_TERM as time_range:
             print(time_range)
             results = sp.current_user_top_tracks(time_range=ranges[1], limit=leng)
-            print_popularity(results, leng)
         case consts.LONG_TERM as time_range:
             print(time_range)
             results = sp.current_user_top_tracks(time_range=ranges[2], limit=leng)
-            print_popularity(results, leng)
         case _:
             print("Invalid input - how did you get here?")
+    if results:
+        print_popularity(results, leng)
     print()
 
 def get_artists(token, sp, ranges):
@@ -104,21 +104,22 @@ def get_artists(token, sp, ranges):
     leng = artist_range
     print()
 
+
+    results = None
     match term:
         case consts.SHORT_TERM as time_range:
             print(time_range)
             results = sp.current_user_top_artists(time_range=ranges[0], limit=leng)
-            print_artists_helper(results)
         case consts.MEDIUM_TERM as time_range:
             print(time_range)
             results = sp.current_user_top_artists(time_range=ranges[1], limit=leng)
-            print_artists_helper(results)
         case consts.LONG_TERM as time_range:
             print(time_range)
             results = sp.current_user_top_artists(time_range=ranges[2], limit=leng)
-            print_artists_helper(results)
         case _:
             print("How did you get here?")
+    if results:
+        print_artists_helper(results)
     print()
 
 def print_popularity(results, leng):
